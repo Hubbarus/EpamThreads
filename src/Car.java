@@ -1,13 +1,13 @@
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public abstract class Car implements Runnable {
     private String name;
     long waitingTime;
     Date creatingTime;
-    final long PARKING_TIME_MILLIS = 1000;
-    boolean isParked;
-    Date parkingTime;
+    private final long PARKING_TIME_MILLIS = 3000;
+    private boolean isParked;
+    private boolean wasParked;
+    private Date parkingTime;
 
     public Car(String name) {
         this.name = name;
@@ -15,10 +15,6 @@ public abstract class Car implements Runnable {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     private boolean isWaiting() {
@@ -36,6 +32,8 @@ public abstract class Car implements Runnable {
             if (Parking.lots[i] == null) {
                 System.out.println(getName() + " parked!");
                 isParked = true;
+                wasParked = true;
+                Parking.numberOfParkedCars++;
                 parkingTime = new Date();
                 Parking.lots[i] = this;
                 break;
@@ -50,7 +48,6 @@ public abstract class Car implements Runnable {
                     isParked = false;
                     Parking.lots[i] = null;
                     System.out.println(getName() + " left the parking");
-
                 }
             }
         }
@@ -76,7 +73,8 @@ public abstract class Car implements Runnable {
             }
         }
 
-        if (!isWaiting()) {
+        if (!isWaiting() && !wasParked) {
+            Parking.numberOfGoneCars++;
             System.out.println(this.getName() + " gone away!");
         }
     }

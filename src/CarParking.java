@@ -1,6 +1,4 @@
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class CarParking {
 
@@ -12,6 +10,17 @@ public class CarParking {
             t.start();
             t1.start();
             t2.start();
+            Parking.numberOfTotalCars += 3;
         }
+
+        try {
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("\nTotal cars: " + Parking.numberOfTotalCars);
+        System.out.println("Parked cars: " + Parking.numberOfParkedCars);
+        System.out.println("Gone cars: " + Parking.numberOfGoneCars);
     }
 }
